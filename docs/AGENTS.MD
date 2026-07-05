@@ -24,6 +24,7 @@ File ini adalah instruksi permanen untuk AI agent yang mengerjakan project SIMKL
 9. **Jangan membuat fitur di luar scope yang diminta** (lihat "Out of Scope" di PRD: integrasi SATUSEHAT, BPJS, PACS/DICOM, bot WhatsApp, BSrE) kecuali user secara eksplisit meminta untuk mulai mengerjakannya.
 10. **Jangan mengubah file `AGENTS.md`, `PRD.md`, `TECH_STACK.md`, `DATABASE_SCHEMA.md`, atau `TASK_BREAKDOWN.md` ini sendiri** kecuali diminta langsung oleh user.
 11. **Jangan pernah menampilkan data pasien, isi klinis, atau hash penuh dokumen di halaman verifikasi QR publik (`/verify/{token}`).** Halaman ini boleh diakses tanpa login, tapi field yang di-render **wajib dibatasi eksplisit** hanya: nama & status dokter penandatangan, jenis dokumen (generik, misal "Resep"), waktu tanda tangan, dan status valid/tidak. Ini berlaku juga saat debugging — jangan sisipkan data pasien "sementara untuk testing" di view ini.
+12. **Jangan mengubah, memindahkan, atau menghapus `public/assets/starter.html` dan isi folder `public/assets/`.** File/folder ini adalah acuan statis template AdminLTE 4 dan asset yang sudah disiapkan user — hanya dibaca sebagai referensi struktur markup, tidak boleh diedit. Lihat `TECH_STACK.md` bagian 8 untuk cara mengonversinya ke Blade layout yang benar.
 
 ## 3. Wajib Dilakukan
 

@@ -7,7 +7,7 @@
 | Backend Framework | Laravel 13 (PHP 8.3+) |
 | Database | MySQL 8 |
 | Web Server | Apache |
-| CSS Framework | Bootstrap 5 |
+| CSS Framework | AdminLTE 4 (dibangun di atas Bootstrap 5 — utility class Bootstrap 5 tetap berlaku), lihat bagian 8 |
 | Frontend Interaktivitas | Blade + Alpine.js (ringan, cocok untuk komponen dinamis seperti odontogram/GCS calculator tanpa perlu SPA penuh) |
 | Realtime (display antrian) | Laravel Reverb (WebSocket bawaan Laravel) — alternatif ringan: polling AJAX interval 3-5 detik jika ingin skip setup websocket di awal |
 
@@ -103,7 +103,7 @@ routes/
 
 ## 5. Autentikasi & Session
 
-- Gunakan Laravel Breeze (Blade stack) sebagai starter kit auth — ringan, cocok dengan Bootstrap 5 (perlu re-style dari Tailwind default Breeze ke Bootstrap 5, atau install manual tanpa scaffolding UI Breeze dan pakai Bootstrap dari awal).
+- Gunakan Laravel Breeze (Blade stack) sebagai starter kit auth — install manual tanpa scaffolding UI Tailwind default Breeze, ganti tampilan login/register agar konsisten dengan AdminLTE 4 (pakai asset yang sudah ada di `public/assets/`, lihat bagian 8), bukan tampilan Breeze bawaan.
 - Tambahkan **2FA opsional** untuk Superadmin (opsional, bukan wajib MVP).
 - Session timeout wajib untuk keamanan data medis (misal auto logout setelah idle 15-30 menit) — bisa dikonfigurasi.
 
@@ -122,6 +122,35 @@ Klinik menggunakan **printer thermal** (umumnya lebar kertas 58mm atau 80mm — 
 
 **Keputusan:** mulai dengan **opsi 1 (cetak via browser)** di Fase 5 & 6, upgrade ke ESC/POS hanya jika di lapangan ternyata bermasalah (misal potong kertas otomatis tidak jalan, format berantakan).
 
+## 8. Frontend Template & Layout (AdminLTE 4)
+
+Project menggunakan template **AdminLTE 4** (berbasis Bootstrap 5). Asset (CSS, JS, font, plugin) sudah ditaruh di `public/assets/`, dan contoh halaman referensi ada di **`public/assets/starter.html`**.
+
+**Aturan wajib untuk AI agent:**
+
+1. **`public/assets/starter.html` adalah acuan struktur markup, bukan file yang dijalankan.** Jangan hapus, jangan pindahkan, jangan ubah isinya. File ini hanya dibaca sebagai referensi untuk melihat struktur HTML asli AdminLTE 4 (sidebar, navbar, breadcrumb, content wrapper, footer) sebelum dikonversi ke Blade.
+2. **Layout utama dibuat sebagai Blade layout terpisah**, bukan menyalin `starter.html` ke satu file besar. Struktur yang direkomendasikan:
+   ```
+   resources/views/layouts/
+     app.blade.php          -- kerangka utama (html, head, body wrapper AdminLTE, @yield/section untuk konten)
+   resources/views/components/
+     navbar.blade.php       -- top navbar (partial)
+     sidebar.blade.php      -- sidebar menu (HARUS baca menu dari database, lihat AGENTS.md poin 7 & PRD bagian 3 — jangan hardcode <li> menu di sini)
+     footer.blade.php       -- footer partial
+     breadcrumb.blade.php   -- breadcrumb per halaman (menerima parameter judul & path)
+   ```
+3. **Path asset di layout memakai `asset('assets/...')`**, mengikuti struktur folder yang sudah ada di `public/assets/` — jangan install ulang AdminLTE via npm/composer/CDN yang berbeda, karena asset lokal sudah disiapkan.
+4. **Class & struktur HTML AdminLTE 4 (`sidebar`, `app-wrapper`, `content-wrapper`, `app-main`, dsb — sesuai versi 4, yang strukturnya berbeda dari AdminLTE 3) harus diikuti persis seperti di `starter.html`**, supaya semua plugin CSS/JS bawaan (dropdown sidebar, dark mode toggle jika ada, dsb) tetap berfungsi. Jangan menulis markup wrapper versi sendiri yang "mirip-mirip".
+5. **Sidebar menu tetap dinamis** (sesuai arsitektur di PRD bagian 3) — gunakan struktur `<li>`/`<a>` yang sama seperti di `starter.html`, tapi isi/loop-nya berasal dari tabel `menus` (relasi parent-child untuk submenu), bukan daftar menu statis dari `starter.html`.
+6. Halaman-halaman modul (`resources/views/registration/`, `pharmacy/`, dst) **extend `layouts.app`** dan hanya mengisi bagian konten (`@section('content')`), tidak menulis ulang bagian sidebar/navbar/head di setiap halaman.
+7. Jika ada komponen AdminLTE spesifik yang dipakai satu halaman saja (misal datatable plugin, date range picker), load asset tambahan itu **lokal per halaman** (`@push('scripts')` / `@push('styles')`), jangan dimasukkan ke layout utama supaya halaman lain tidak ikut memuat asset yang tidak perlu.
+
+**Urutan kerja saat membangun layout pertama kali (Fase 0):**
+1. Baca `public/assets/starter.html` untuk memahami struktur wrapper AdminLTE 4 yang dipakai (versi elemen, urutan tag, class utama).
+2. Pecah jadi `layouts/app.blade.php` + partial (navbar, sidebar, footer) sesuai poin 2 di atas.
+3. Buat satu halaman dashboard kosong yang extend layout ini untuk memastikan tampilan sudah identik dengan `starter.html` sebelum lanjut ke modul lain.
+4. Baru setelah layout dasar dikonfirmasi cocok, sidebar diisi dinamis dari tabel `menus`.
+
 ## 9. Tanda Tangan Elektronik via QR Verifikasi (Fase 1)
 
 Menggantikan pendekatan signature-pad. Lihat detail alur bisnis di `PRD.md` bagian 4.2. Poin teknis & keamanan yang wajib diikuti:
@@ -136,5 +165,5 @@ Menggantikan pendekatan signature-pad. Lihat detail alur bisnis di `PRD.md` bagi
 ## 10. Rekomendasi Tambahan (opsional, boleh disesuaikan)
 
 - **Laravel Excel** untuk import master data (misal import daftar obat awal dari file Excel distributor) selain untuk export laporan.
-- **Chart.js** (via CDN, ringan, cocok Bootstrap 5) untuk grafik di dashboard laporan — lebih simpel daripada library chart Vue/React karena stack Anda Blade-based.
+- **Chart.js** (via CDN, ringan, cocok dengan AdminLTE 4/Bootstrap 5) untuk grafik di dashboard laporan — lebih simpel daripada library chart Vue/React karena stack Anda Blade-based.
 - **DataTables (jQuery)** di sisi frontend untuk melengkapi `yajra/laravel-datatables` di backend.

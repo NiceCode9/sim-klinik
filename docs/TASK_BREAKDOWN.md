@@ -10,10 +10,12 @@ Urutan pengerjaan disusun agar fondasi (auth, permission, menu dinamis) selesai 
 
 - [ ] Setup project Laravel 13, konfigurasi `.env`, koneksi MySQL.
 - [ ] Install semua package inti (lihat `TECH_STACK.md` bagian 2).
-- [ ] Setup autentikasi (Breeze, Bootstrap 5 styling).
+- [ ] **Bangun layout utama AdminLTE 4** dari acuan `public/assets/starter.html` — pecah jadi `layouts/app.blade.php` + partial navbar/sidebar/footer, ikuti urutan kerja & aturan persis di `TECH_STACK.md` bagian 8 (jangan ubah/hapus `starter.html`, jangan menulis wrapper markup versi sendiri).
+- [ ] Buat halaman dashboard kosong yang extend layout ini, verifikasi tampilan identik dengan `starter.html` sebelum lanjut.
+- [ ] Setup autentikasi (Breeze, restyle ke AdminLTE 4 sesuai bagian 5 `TECH_STACK.md`).
 - [ ] Migration & seeder: `roles`, `permissions` dasar, user Superadmin default.
 - [ ] Migration & model: `menus`, dengan relasi ke permission.
-- [ ] Build komponen sidebar dinamis (baca menu dari DB sesuai permission user login).
+- [ ] Build komponen sidebar dinamis (`components/sidebar.blade.php`, baca menu dari DB sesuai permission user login, markup mengikuti struktur `starter.html`).
 - [ ] Halaman Settings → CRUD menu & assign permission ke role/user (panel Superadmin).
 - [ ] Setup `spatie/laravel-activitylog`, halaman log activity untuk Superadmin.
 
