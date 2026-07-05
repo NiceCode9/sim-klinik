@@ -36,6 +36,7 @@ File ini adalah instruksi permanen untuk AI agent yang mengerjakan project SIMKL
 6. Setiap membuat migration baru, sertakan juga **factory** (untuk keperluan testing/seeding) jika model tersebut akan dites.
 7. Gunakan **DB transaction** (`DB::transaction()`) untuk operasi yang menyentuh lebih dari satu tabel sekaligus dan harus konsisten (contoh: proses resep racikan yang mengurangi banyak batch obat sekaligus + membuat tagihan).
 8. Ikuti konvensi penamaan di `TECH_STACK.md` bagian 4 dengan konsisten.
+9. **Sebelum membangun komponen UI apa pun (form, tabel data, chart, date picker, dsb), cek dulu apakah ada file contoh yang cocok di `public/assets/`** (lihat `TECH_STACK.md` bagian 8) dan jadikan itu acuan markup/inisialisasi plugin. Jika tidak ada contoh yang cocok, boleh improvisasi selama tetap konsisten dengan konvensi AdminLTE 4/Bootstrap 5, dan sebutkan ke user bahwa bagian itu dibuat tanpa acuan contoh.
 
 ## 4. Ketika Instruksi Tidak Jelas
 

@@ -151,6 +151,15 @@ Project menggunakan template **AdminLTE 4** (berbasis Bootstrap 5). Asset (CSS, 
 3. Buat satu halaman dashboard kosong yang extend layout ini untuk memastikan tampilan sudah identik dengan `starter.html` sebelum lanjut ke modul lain.
 4. Baru setelah layout dasar dikonfirmasi cocok, sidebar diisi dinamis dari tabel `menus`.
 
+**Pemakaian contoh halaman plugin (form, chart, datatable, kalender, dsb):**
+
+Selain `starter.html`, folder `public/assets/` juga berisi **file contoh halaman per plugin AdminLTE 4** (misal contoh halaman form dengan validasi, contoh datatable, contoh chart, contoh kalender, dsb — sesuai plugin yang dibundel template).
+
+- **Sebelum membangun UI untuk kebutuhan apa pun (form input, tabel data, grafik/chart, date picker, dsb), AI agent WAJIB mengecek dulu apakah ada file contoh yang cocok di `public/assets/` untuk plugin tersebut.** Jika ada, jadikan file itu **acuan struktur markup, class CSS, dan cara pemanggilan JS plugin-nya** — jangan menulis markup/inisialisasi plugin dari nol atau dari memori pelatihan sendiri.
+- **Jika tidak ditemukan contoh yang sesuai** untuk kebutuhan tertentu, AI agent **boleh berimprovisasi**, tetap dalam koridor konvensi AdminLTE 4/Bootstrap 5 yang sudah ditetapkan di bagian ini (jangan pakai library UI di luar yang sudah disediakan tanpa konfirmasi ke user).
+- Sebelum memakai satu file contoh sebagai acuan, **sebutkan ke user file mana yang dipakai sebagai referensi** (nama file, plugin apa) di ringkasan hasil kerja — supaya user bisa cek kecocokannya.
+- Contoh plugin yang lazim ada di bundle AdminLTE 4 dan kemungkinan tersedia di `public/assets/`: DataTables, Chart.js/ChartJS, form validation (misal jQuery Validation atau native), select2, date range picker, iCheck/checkbox custom, sweetalert2 untuk modal konfirmasi. Daftar pasti tergantung apa yang sudah ditaruh user — **jangan asumsikan semua plugin ada, cek dulu isi foldernya**.
+
 ## 9. Tanda Tangan Elektronik via QR Verifikasi (Fase 1)
 
 Menggantikan pendekatan signature-pad. Lihat detail alur bisnis di `PRD.md` bagian 4.2. Poin teknis & keamanan yang wajib diikuti:
