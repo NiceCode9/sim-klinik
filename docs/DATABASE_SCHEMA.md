@@ -23,7 +23,7 @@ Dokumen ini berisi rancangan tabel level tinggi (bukan migration final) sebagai 
 - id, medical_record_number (unik, auto-generate), nik (nullable, unik jika diisi), name, gender, birth_date, phone, address, blood_type (nullable), allergies (text, nullable — penting untuk keselamatan pasien), created_at, updated_at
 
 **employees** (dokter, perawat, apoteker, dst — data kepegawaian umum)
-- id, user_id (FK users, nullable jika staff belum punya akun login), name, employee_type (dokter/perawat/apoteker/kasir/analis/radiografer/resepsionis), specialization_id (FK ke `specializations`, nullable — untuk dokter), str_number (nomor izin praktik, nullable, ditampilkan di halaman verifikasi QR & cetakan dokumen), phone, is_active
+- id, user_id (FK users, nullable jika staff belum punya akun login), name, employee_type (dokter/perawat/apoteker/kasir/analis/radiografer/resepsionis), specialization_id (FK ke `specializations`, nullable — untuk dokter), str_number (nomor izin praktik, nullable), phone, is_active
 
 **specializations**
 - id, name (Penyakit Dalam, Saraf, Gigi, Radiologi, Laboratorium, Umum)
@@ -87,7 +87,7 @@ Dokumen ini berisi rancangan tabel level tinggi (bukan migration final) sebagai 
 **compound_prescriptions** (grup racikan — 1 baris per resep racikan)
 - id, prescription_id (FK), compound_name (misal "Puyer batuk"), total_units (jumlah bungkus/kapsul yang dibuat), embalase_tariff_id (FK ke `tariffs`)
 
-> Catatan implementasi: saat memproses resep racikan, sistem menghitung total bahan tiap obat penyusun = (dosis per unit × total_units), lalu mengurangi stok obat dasar tersebut via `stock_movements`, bukan membuat item stok baru bernama racikan.
+> Catatan implementasi: saat memproses resep racikan, sistem menghitung total bahan tiap obat penyusun = (dosis per unit × total_units), lalu mengurangi stok obat dasar tersebut via `stock_movements`, bukan membuat item stok baru bernama racikan. Lihat algoritma detail di `TECHNICAL_SPECS.md` bagian B.
 
 ---
 

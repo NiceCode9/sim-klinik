@@ -12,13 +12,17 @@ class DatabaseSeeder extends Seeder
         $this->call([
             PermissionSeeder::class,
             RoleSeeder::class,
+            SpecializationSeeder::class,
             MenuSeeder::class,
         ]);
 
-        $superadminUser = User::factory()->create([
-            'name' => 'Superadmin',
-            'email' => 'superadmin@example.com',
-        ]);
+        $superadminUser = User::firstOrCreate(
+            ['email' => 'superadmin@example.com'],
+            [
+                'name' => 'Superadmin',
+                'password' => bcrypt('password'),
+            ]
+        );
         $superadminUser->assignRole('superadmin');
     }
 }
